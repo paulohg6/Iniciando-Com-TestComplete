@@ -1,0 +1,165 @@
+﻿procedure novo();
+begin
+  Sys.Process('Orders_Delphi').VCLObject('MainForm').VCLObject('ToolButton5').Click;
+end;
+
+procedure gravar();
+begin
+  Sys.Process('Orders_Delphi').VCLObject('OrderFrm').VCLObject('OKButton').Click;
+end;
+
+procedure cancelar();
+begin
+  Sys.Process('Orders_Delphi').VCLObject('OrderFrm').VCLObject('CancelButton').Click;
+end;
+
+procedure fechar();
+begin
+  Sys.Process('Orders_Delphi').VCLObject('OrderFrm').Close;
+end;
+
+procedure nomeProduto(produto:string);
+begin
+    Sys.Process('Orders_Delphi').VCLObject('OrderFrm').VCLObject('Product_ComboBox').ClickItem(produto);
+end;
+
+procedure qtdProduto(qdtProd:string);
+begin
+  Sys.Process('Orders_Delphi').VCLObject('OrderFrm').VCLObject('Qty_Edit').SetText(qdtProd);
+end;
+
+procedure data(data:string);
+begin
+  Sys.Process('Orders_Delphi').VCLObject('OrderFrm').VCLObject('Date_Edit').SetText(data);
+end;
+
+procedure nome(nome:string);
+begin
+  Sys.Process('Orders_Delphi').VCLObject('OrderFrm').VCLObject('CustomerName_Edit').SetText(nome);
+end;
+
+procedure rua(rua:string);
+begin
+  Sys.Process('Orders_Delphi').VCLObject('OrderFrm').VCLObject('Street_Edit').SetText(rua);
+end;
+
+procedure cidade(cidade:string);
+begin
+  Sys.Process('Orders_Delphi').VCLObject('OrderFrm').VCLObject('City_Edit').SetText(cidade);
+end;
+
+procedure estado(estado:string);
+begin
+  Sys.Process('Orders_Delphi').VCLObject('OrderFrm').VCLObject('State_Edit').SetText(estado);
+end;
+
+procedure upQtde(x:integer);
+var 
+ i:integer;
+  begin
+    for i := 0 to x do
+      begin
+        Sys.Process('Orders_Delphi').VCLObject('OrderFrm').VCLObject('Qty_UpDown').Up;
+      end;
+  end;
+  
+procedure incluiPedido(arquivo : OleVariant);
+begin
+  TelaPedido.novo;
+  nomeProduto(arquivo.Value('produto'));
+  qtdProduto(arquivo.Value('qtd'));
+  data(arquivo.Value('data'));
+  nome(arquivo.Value('nome'));
+  rua(arquivo.Value('rua'));
+  cidade(arquivo.Value('cidade'));
+  estado(arquivo.Value('estado'));
+  gravar();
+end;
+
+procedure validarPedido(arquivo : OleVariant);
+begin
+  Log.Message(arquivo.Value('vlrUnitario'));
+  aqObject.CheckProperty(Sys.Process('Orders_Delphi').Window('TOrderFrm', 'Novo Pedido', 1).Window('TEdit', '$100', 8), 'wText', cmpEqual, arquivo.Value('vlrUnitario'));
+  Log.Message(arquivo.Value('vlrTotal'));
+  aqObject.CheckProperty(Sys.Process('Orders_Delphi').Window('TOrderFrm', 'Novo Pedido', 1).Window('TEdit', '$100', 7), 'wText', cmpEqual, arquivo.Value('vlrTotal'));
+  Log.Message(arquivo.Value('desc'));
+  aqObject.CheckProperty(Sys.Process('Orders_Delphi').VCLObject('OrderFrm').VCLObject('Discount_Edit'), 'wText', cmpEqual, arquivo.Value('desc'));
+  
+end;
+
+procedure alteraPedido(arquivo : OleVariant);
+var
+  n : OleVariant;
+var
+  i : integer;
+var
+  verifica : integer;
+begin
+  n := Sys.Process('Orders_Delphi').VCLObject('MainForm').VCLObject('ListView');
+  
+  for i := 1 to n.wItemCount do
+    begin
+      verifica := aqString.Find(n.SelectItem(i), arquivo.Value('nome'));
+      if verifica <> -1 then
+        begin
+          Sys.Process('Orders_Delphi').VCLObject('MainForm').VCLObject('ListView').ClickItem(0, arquivo.Value('nome'));
+          Sys.Process('Orders_Delphi').VCLObject('MainForm').VCLObject('ToolButton6').Click();
+          Sys.Process('Orders_Delphi').VCLObject('OrderFrm').VCLObject('Qty_Edit').SetText('150');
+          gravar;
+        end;
+    end;
+end;
+
+procedure excluiTodosPorProduto(arquivo : OleVariant);
+var
+  n : OleVariant;
+var
+  i, verifica, tamanhoLista : integer;
+
+begin
+  n := Sys.Process('Orders_Delphi').VCLObject('MainForm').VCLObject('ListView');
+  tamanhoLista := aqConvert.VarToInt(n.wItemCount);
+  for i := 0 to (tamanhoLista) - 1 do
+    begin
+     if tamanhoLista <> i then
+     begin
+      verifica := aqString.Find(n.SelectItem(i), arquivo.Value('produto'));
+      if verifica <> -1 then
+        begin
+          Sys.Process('Orders_Delphi').VCLObject('MainForm').VCLObject('ToolButton7').Click();
+          Sys.Process('Orders_Delphi').Window('#32770', 'Confirmar').Window('Button', '&Sim').ClickButton;
+          tamanhoLista := tamanhoLista - 1;
+          Log.Message('Tamanho wItem: ' + IntToStr(n.wItemCount));
+          Log.Message('Valor do i: ' + IntToStr(i));
+        end;    
+      end;
+    end;
+//    Log.Message('Tamanho Lista: ' + IntToStr(tamanhoLista));
+//    Log.Message('Valor do i: ' + IntToStr(i));
+end;
+
+procedure excluiProdutoWhile(arquivo : OleVariant);
+var
+  n : OleVariant;
+var
+  i : integer;
+var
+  verifica : integer;
+var
+  tamanhoLista :  integer;
+begin
+  i := 0;
+  n := Sys.Process('Orders_Delphi').VCLObject('MainForm').VCLObject('ListView');
+  tamanhoLista := n.wItemCount;
+
+  while (i<>tamanhoLista) do
+    verifica := aqString.Find(n.SelectItem(i), arquivo.Value('produto'));
+    i:=i+1;
+      if verifica <> -1 then
+        begin
+          i:=i-1;
+          tamanhoLista := tamanhoLista -1;
+          Sys.Process('Orders_Delphi').VCLObject('MainForm').VCLObject('ToolButton7').Click();
+          Sys.Process('Orders_Delphi').Window('#32770', 'Confirmar').Window('Button', '&Sim').ClickButton;
+        end;
+  end;

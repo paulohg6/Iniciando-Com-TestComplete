@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Root signature="{9252F941-DB23-4FCA-AA50-858B33BB4A19}" version="11.40">
+	<children>
+		<child name="Principal" key="{81F2ABB1-D091-443B-B2F3-FD0D5B427A73}" type="Script Unit" typeId="{291CAE9C-4D20-4F33-8B5F-D48B587F3D65}" pluginName="Script">
+			<data path="Principal.sd" />
+		</child>
+		<child name="lib" key="{5B630E7C-8770-4ECF-9518-600E3B65916E}" type="Script Unit" typeId="{291CAE9C-4D20-4F33-8B5F-D48B587F3D65}" pluginName="Script">
+			<data path="lib.sd" />
+		</child>
+		<child name="TelaPedido" key="{A7704EDB-1BD2-4CAD-8DE8-714C4BC5955D}" type="Script Unit" typeId="{291CAE9C-4D20-4F33-8B5F-D48B587F3D65}" pluginName="Script">
+			<data path="TelaPedido.sd" />
+		</child>
+	</children>
+	<folders />
+</Root>

@@ -1,0 +1,26 @@
+﻿procedure fechar();
+begin
+  Sys.Process('Orders_Delphi').Close;
+end;
+
+
+procedure abrir();
+begin
+TestedApps.Orders_Delphi.Run();
+end;
+
+procedure opcaoNao();
+begin
+Sys.Process('Orders_Delphi').Window('#32770', 'Confirmar', 1).Window('Button', '&Não', 2).Click;
+end;
+
+function abrirArquivo(caminho,planilha:string);
+begin
+  result := DDT.ExcelDriver(caminho, planilha);
+end;
+
+
+function fecharArquivo(nome:string);
+begin
+  result := DDT.CloseDriver(nome);
+end;

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Root signature="{B9D9273E-7266-43E0-BF02-97F168593604}" version="12.0">
+	<TestData Description="" Key="{0C4BE51D-188C-4CF5-9A16-F14D1FA12275}" Type="{79147B28-EE20-4294-B773-1D3787FBF37B}">
+		<Data>
+			<Extenders>
+				<NodeBitmaps />
+			</Extenders>
+		</Data>
+		<Children>
+			<Operation Type="{206B0810-0B42-45AB-90F5-9F8DF0D669D2}">
+				<Data Description="Runs a script routine." TestName="Test1" Unit="Principal" />
+			</Operation>
+		</Children>
+	</TestData>
+	<Variables Version="3" Key="{B696E561-09C6-4491-A94F-9035B95CFC92}" />
+	<Parameters Key="{77147B4E-F3BA-436B-983C-ECDA56561546}" />
+</Root>

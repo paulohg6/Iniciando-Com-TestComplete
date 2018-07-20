@@ -1,0 +1,7 @@
+﻿
+procedure TextoNome();
+begin
+TestedApps.Orders_Delphi.Run();
+Sys.Process('Orders_Delphi').VCLObject('MainForm').VCLObject('ToolButton5').Click;
+Aliases.Orders_Delphi.OrderFrm.CustomerName_Edit.SetText('jjj');
+end;
